@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.InputStream;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     String[] answers = new  String[4]; // step 8 // apa gunanya ?
     int locationOfCorrectAnswer = 0;
 
+    Button button0, button1, button2, button3;
 
     public class imageDownloader extends AsyncTask<String, Void, Bitmap>{ // step 5
 
@@ -83,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.imageView);
+        button0 = findViewById(R.id.button0);
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+
+
+
 
 
         DownloadTask task = new DownloadTask();
@@ -135,9 +144,12 @@ public class MainActivity extends AppCompatActivity {
 
                     answers[i] =celebNames.get(incorrectAnswerLocation);
                 }
-
-
             }
+
+            button0.setText(answers[0]); //step 7
+            button1.setText(answers[1]);
+            button2.setText(answers[2]);
+            button3.setText(answers[3]);
 
 
         }catch (Exception e){
