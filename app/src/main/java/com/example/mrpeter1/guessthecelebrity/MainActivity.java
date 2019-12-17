@@ -26,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     int chosenCeleb = 0 ;
     ImageView imageView;
 
+    String[] answers = new  String[4]; // step 8 // apa gunanya ?
+    int locationOfCorrectAnswer = 0;
+
+
     public class imageDownloader extends AsyncTask<String, Void, Bitmap>{ // step 5
 
 
@@ -114,6 +118,27 @@ public class MainActivity extends AppCompatActivity {
 
             imageView.setImageBitmap(celebImage);// menampilkan di xml gambar yang di dapatkan oleh celeb image
 
+            locationOfCorrectAnswer = rand.nextInt(4); // step 8 mengset 4 kemungkinan jawaban
+            // dibawahnya membuat variabel untuk lokasi jawaban yang  tidak benar
+            int incorrectAnswerLocation;
+            for (int i=0; i < 4 ; i++){ // step 8 perintah untuk mencocokan jawaban yang benar atau salah
+
+                if (i == locationOfCorrectAnswer){
+                    answers[i] = celebNames.get(chosenCeleb);
+                } else {
+
+                    incorrectAnswerLocation = rand.nextInt(celebURLs.size());
+
+                    while (incorrectAnswerLocation == chosenCeleb){
+                        incorrectAnswerLocation = rand.nextInt(celebURLs.size());
+                    }
+
+                    answers[i] =celebNames.get(incorrectAnswerLocation);
+                }
+
+
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -131,3 +156,5 @@ public class MainActivity extends AppCompatActivity {
 // step 4 mengacak array nama image untuk di tampilkan
 // step 5 mendownload image
 // step 6 memilih secara random url yang telah di download
+// step 7 menampilkan nama di button untuk dijadika pilahan ganda
+// step 8 mengset salah satu dari button ada jawaban yg benar
