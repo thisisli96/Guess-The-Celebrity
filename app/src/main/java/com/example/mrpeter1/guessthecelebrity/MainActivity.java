@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         DownloadTask task = new DownloadTask();
         String result = null;
 
-        try{
+        try{ // STEP DUA
             result = task.execute("http://www.posh24.se/kandisar").get();
             Log.i("Contents of URL", result);
             String[] splitResult = result.split("<div class=\"listedArticles\">");  //bisa
@@ -65,13 +65,16 @@ public class MainActivity extends AppCompatActivity {
             Pattern p = Pattern.compile("img src=\"(.*?)\""); // untuk dapat namanya saja dari inspect elemen http://www.posh24.se/kandisar
             Matcher m = p.matcher(splitResult[0]);
             while (m.find()) {
-                System.out.println(m.group(1));
+                celebURLs.add(m.group(1)); // step 3
+               //System.out.println(m.group(1));
+
             }
 
                 p = Pattern.compile("alt=\"(.*?)\"");  // untuk dapat namanya saja dari inspect elemen http://www.posh24.se/kandisar
           m = p.matcher(splitResult[0]);
             while (m.find()) {
-                System.out.println(m.group(1));
+                celebNames.add(m.group(1)); // step 3
+                // System.out.println(m.group(1));
             }
 
 
@@ -86,3 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
+
+//step pertama download script sebuah web ke android
+// step kedua mengambil nama dan gambar pada script tsb
+// step ketiga memasukkan data nama dan image ke dalam array
+// step 4 mengacak array nama image untuk di tampilkan
