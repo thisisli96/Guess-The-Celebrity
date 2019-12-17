@@ -10,8 +10,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
+
+    ArrayList<String> celebURLs = new ArrayList<String>();
+    ArrayList<String> celebNames = new ArrayList<String>();
 
     public  class DownloadTask extends AsyncTask<String, Void, String> {
 
@@ -53,6 +59,25 @@ public class MainActivity extends AppCompatActivity {
         try{
             result = task.execute("http://www.posh24.se/kandisar").get();
             Log.i("Contents of URL", result);
+            String[] splitResult = result.split("<div class=\"listedArticles\">");  //bisa
+         // String[] splitResult = result.split("<div class=\"channelListEntry\">");
+
+            Pattern p = Pattern.compile("img src=\"(.*?)\""); // untuk dapat namanya saja dari inspect elemen http://www.posh24.se/kandisar
+            Matcher m = p.matcher(splitResult[0]);
+            while (m.find()) {
+                System.out.println(m.group(1));
+            }
+
+                p = Pattern.compile("alt=\"(.*?)\"");  // untuk dapat namanya saja dari inspect elemen http://www.posh24.se/kandisar
+          m = p.matcher(splitResult[0]);
+            while (m.find()) {
+                System.out.println(m.group(1));
+            }
+
+
+
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
