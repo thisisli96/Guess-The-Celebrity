@@ -2,15 +2,20 @@ package com.example.mrpeter1.guessthecelebrity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +23,28 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> celebURLs = new ArrayList<String>();
     ArrayList<String> celebNames = new ArrayList<String>();
+    int chosenCeleb = 0 ;
+    ImageView imageView;
+
+    public class imageDownloader extends AsyncTask<String, Void, Bitmap>{ // step 5
+
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+           try {
+               URL url = new URL(urls[0]);
+               HttpURLConnection connection =(HttpURLConnection) url.openConnection();
+               connection.connect();
+               InputStream inputStem = connection.getInputStream();
+               Bitmap myBitmap = BitmapFactory.decodeStream(inputStem);
+               return myBitmap;
+
+           }catch (Exception e){
+               e.printStackTrace();
+               return  null;
+           }
+        }
+    }
 
     public  class DownloadTask extends AsyncTask<String, Void, String> {
 
@@ -51,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imageView = findViewById(R.id.imageView);
 
 
         DownloadTask task = new DownloadTask();
@@ -77,8 +105,14 @@ public class MainActivity extends AppCompatActivity {
                 // System.out.println(m.group(1));
             }
 
+            Random rand = new Random();
+            chosenCeleb = rand.nextInt(celebURLs.size()); // step 6
 
+            imageDownloader imageTask = new imageDownloader();
 
+            Bitmap celebImage = imageTask.execute(celebURLs.get(chosenCeleb)).get(); // step 6 dan mengambil atau mengubah jadi file gambar sesuai dengan chosenceleb
+
+            imageView.setImageBitmap(celebImage);// menampilkan di xml gambar yang di dapatkan oleh celeb image
 
 
         }catch (Exception e){
@@ -95,3 +129,5 @@ public class MainActivity extends AppCompatActivity {
 // step kedua mengambil nama dan gambar pada script tsb
 // step ketiga memasukkan data nama dan image ke dalam array
 // step 4 mengacak array nama image untuk di tampilkan
+// step 5 mendownload image
+// step 6 memilih secara random url yang telah di download
