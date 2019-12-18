@@ -7,8 +7,10 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
     int locationOfCorrectAnswer = 0;
 
     Button button0, button1, button2, button3;
+
+    public  void celebChosen (View view){ // step 9
+        if (view.getTag().toString().equals(Integer.toString(locationOfCorrectAnswer))){
+            Toast.makeText(getApplicationContext(),"Correct!",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(),"Wrong it was "+ celebNames.get(chosenCeleb),Toast.LENGTH_SHORT).show();
+
+        }
+    }
 
     public class imageDownloader extends AsyncTask<String, Void, Bitmap>{ // step 5
 
@@ -89,10 +100,6 @@ public class MainActivity extends AppCompatActivity {
         button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.button2);
         button3 = findViewById(R.id.button3);
-
-
-
-
 
         DownloadTask task = new DownloadTask();
         String result = null;
@@ -170,3 +177,5 @@ public class MainActivity extends AppCompatActivity {
 // step 6 memilih secara random url yang telah di download
 // step 7 menampilkan nama di button untuk dijadika pilahan ganda
 // step 8 mengset salah satu dari button ada jawaban yg benar
+// step 9 set onclick selebchosen settelah itu add tag ke button untuk membandingkan jawaban yang di pilih
+
