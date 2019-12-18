@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Correct!",Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getApplicationContext(),"Wrong it was "+ celebNames.get(chosenCeleb),Toast.LENGTH_SHORT).show();
-
         }
+        newQuestion(); // step 10
     }
 
     public class imageDownloader extends AsyncTask<String, Void, Bitmap>{ // step 5
@@ -91,6 +91,47 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void newQuestion() { // step 10
+
+    try {
+        Random rand = new Random();
+        chosenCeleb = rand.nextInt(celebURLs.size()); // step 6
+
+        imageDownloader imageTask = new imageDownloader();
+
+        Bitmap celebImage = imageTask.execute(celebURLs.get(chosenCeleb)).get(); // step 6 dan mengambil atau mengubah jadi file gambar sesuai dengan chosenceleb
+
+        imageView.setImageBitmap(celebImage);// menampilkan di xml gambar yang di dapatkan oleh celeb image
+
+        locationOfCorrectAnswer = rand.nextInt(4); // step 8 mengset 4 kemungkinan jawaban
+        // dibawahnya membuat variabel untuk lokasi jawaban yang  tidak benar
+        int incorrectAnswerLocation;
+        for (int i = 0; i < 4; i++) { // step 8 perintah untuk mencocokan jawaban yang benar atau salah
+
+            if (i == locationOfCorrectAnswer) {
+                answers[i] = celebNames.get(chosenCeleb);
+            } else {
+
+                incorrectAnswerLocation = rand.nextInt(celebURLs.size());
+
+                while (incorrectAnswerLocation == chosenCeleb) {
+                    incorrectAnswerLocation = rand.nextInt(celebURLs.size());
+                }
+
+                answers[i] = celebNames.get(incorrectAnswerLocation);
+            }
+        }
+
+        button0.setText(answers[0]); //step 7
+        button1.setText(answers[1]);
+        button2.setText(answers[2]);
+        button3.setText(answers[3]);
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,39 +165,39 @@ public class MainActivity extends AppCompatActivity {
                 celebNames.add(m.group(1)); // step 3
                 // System.out.println(m.group(1));
             }
-
-            Random rand = new Random();
-            chosenCeleb = rand.nextInt(celebURLs.size()); // step 6
-
-            imageDownloader imageTask = new imageDownloader();
-
-            Bitmap celebImage = imageTask.execute(celebURLs.get(chosenCeleb)).get(); // step 6 dan mengambil atau mengubah jadi file gambar sesuai dengan chosenceleb
-
-            imageView.setImageBitmap(celebImage);// menampilkan di xml gambar yang di dapatkan oleh celeb image
-
-            locationOfCorrectAnswer = rand.nextInt(4); // step 8 mengset 4 kemungkinan jawaban
-            // dibawahnya membuat variabel untuk lokasi jawaban yang  tidak benar
-            int incorrectAnswerLocation;
-            for (int i=0; i < 4 ; i++){ // step 8 perintah untuk mencocokan jawaban yang benar atau salah
-
-                if (i == locationOfCorrectAnswer){
-                    answers[i] = celebNames.get(chosenCeleb);
-                } else {
-
-                    incorrectAnswerLocation = rand.nextInt(celebURLs.size());
-
-                    while (incorrectAnswerLocation == chosenCeleb){
-                        incorrectAnswerLocation = rand.nextInt(celebURLs.size());
-                    }
-
-                    answers[i] =celebNames.get(incorrectAnswerLocation);
-                }
-            }
-
-            button0.setText(answers[0]); //step 7
-            button1.setText(answers[1]);
-            button2.setText(answers[2]);
-            button3.setText(answers[3]);
+            newQuestion(); //step 10
+//            Random rand = new Random();
+//            chosenCeleb = rand.nextInt(celebURLs.size()); // step 6
+//
+//            imageDownloader imageTask = new imageDownloader();
+//
+//            Bitmap celebImage = imageTask.execute(celebURLs.get(chosenCeleb)).get(); // step 6 dan mengambil atau mengubah jadi file gambar sesuai dengan chosenceleb
+//
+//            imageView.setImageBitmap(celebImage);// menampilkan di xml gambar yang di dapatkan oleh celeb image
+//
+//            locationOfCorrectAnswer = rand.nextInt(4); // step 8 mengset 4 kemungkinan jawaban
+//            // dibawahnya membuat variabel untuk lokasi jawaban yang  tidak benar
+//            int incorrectAnswerLocation;
+//            for (int i=0; i < 4 ; i++){ // step 8 perintah untuk mencocokan jawaban yang benar atau salah
+//
+//                if (i == locationOfCorrectAnswer){
+//                    answers[i] = celebNames.get(chosenCeleb);
+//                } else {
+//
+//                    incorrectAnswerLocation = rand.nextInt(celebURLs.size());
+//
+//                    while (incorrectAnswerLocation == chosenCeleb){
+//                        incorrectAnswerLocation = rand.nextInt(celebURLs.size());
+//                    }
+//
+//                    answers[i] =celebNames.get(incorrectAnswerLocation);
+//                }
+//            }
+//
+//            button0.setText(answers[0]); //step 7
+//            button1.setText(answers[1]);
+//            button2.setText(answers[2]);
+//            button3.setText(answers[3]);
 
 
         }catch (Exception e){
@@ -178,4 +219,5 @@ public class MainActivity extends AppCompatActivity {
 // step 7 menampilkan nama di button untuk dijadika pilahan ganda
 // step 8 mengset salah satu dari button ada jawaban yg benar
 // step 9 set onclick selebchosen settelah itu add tag ke button untuk membandingkan jawaban yang di pilih
+// step 10 setelah memilih jawaban ke next question
 
